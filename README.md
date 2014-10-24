@@ -1,8 +1,10 @@
 cinder-violin-driver-havana
 ===========================
 
-6000 Series All-Flash Array Volume Driver V1.0.0 for OpenStack Cinder
-Havana Release.
+*** WARNING: Alpha release. Use at your own risk! ***
+
+6000 Series All-Flash Array Volume Driver V1.5.0 for OpenStack Cinder
+Icehouse Release.
 
 This repository contains the latest open-source release of Violin
 Memory's python drivers and client communication libraries for use
@@ -14,22 +16,22 @@ users and may be periodically updated in the future.
 
 Overview
 --------
-The Volume Driver package for OpenStack Havana from Violin Memory adds
+The Volume Driver package for OpenStack Icehouse from Violin Memory adds
 block-storage service support for Violin V6000 series All-Flash
 Arrays. The package is implemented as a storage "plug-in" using the
 standard Cinder storage driver API, and facilitates the creation,
 attachment, and management of volumes (LUNs) between a Flash Array and
 different host servers.
 
-All Cinder volume features required for the OpenStack Havana release
+All Cinder volume features required for the OpenStack Icehouse release
 are supported, including volume, snapshot, and clone operations. The
-1.0.0 driver package release can be used with any OpenStack Havana
-deployment for all 6000 Series arrays running V6.3.0.4 or V6.3.1 using
-FibreChannel HBAs.
+1.5.0 driver package release can be used with any OpenStack Icehouse
+deployment for all 6000 Series arrays running V6.3.0.4 or V6.3.1 (or
+newer) with either FibreChannel or ISCSI connectivity.
 
-The released software is available as an installable tarball and a
-RHEL6.5 RPM. Software and support for existing Violin Memory customers
-is available from the Violin Memory Support portal at
+This Alpha-stage software is available as an installable tarball
+only. Use at your own risk.  Software and support for existing Violin
+Memory customers is available from the Violin Memory Support portal at
 www.violinmemory.com/support.
 
 
@@ -52,14 +54,14 @@ Setup
 3. Follow your system documentation to enable FibreChannel or iSCSI
    and configure your HBAs.
 
-4. Configure cinder to use one of the violin drivers (see below).
+4. Configure cinder to use one of the Violin drivers (see below).
 
 5. Restart cinder-volume.
 
-Basic Configuration with iSCSI
-------------------------------
+Basic Configuration for ISCSI Driver
+------------------------------------
 
-You will need to alter your cinder configuation, typically in
+You will need to alter your Cinder configuation, typically in
 /etc/cinder/cinder.conf.
 
 The following list shows all of the available options and their
@@ -98,7 +100,7 @@ default values:
 A typical configuration file section for using the Violin driver might
 look like this:
 
-    volume_driver=cinder.volume.drivers.violin.violin.ViolinDriver
+    volume_driver=cinder.volume.drivers.violin.v6000_iscsi.V6000ISCSIDriver
     gateway_vip=1.2.3.4
     gateway_mga=1.2.3.5
     gateway_mgb=1.2.3.6
@@ -107,8 +109,8 @@ Note: if you add the configuration option 'verbose=True' and/or
 'debug=True' to cinder.conf, you will receive helpful logging from the
 Violin driver in /var/log/cinder/cinder-volume.log.
 
-Basic Configuration with FibreChannel
--------------------------------------
+Basic Configuration for FibreChannel Driver
+-------------------------------------------
 You will need to alter your cinder configuation, typically in
 /etc/cinder/cinder.conf.
 
@@ -142,7 +144,7 @@ default values:
 A typical configuration file section for using the Violin driver might
 look like this:
 
-    volume_driver=cinder.volume.drivers.violin.violin_fc.ViolinFCDriver
+    volume_driver=cinder.volume.drivers.violin.v6000_fcp.V6000FCDriver
     gateway_vip=1.2.3.4
     gateway_mga=1.2.3.5
     gateway_mgb=1.2.3.6
@@ -153,8 +155,6 @@ Violin driver in /var/log/cinder/cinder-volume.log.
 
 Additional Configuration for Multibackend
 -----------------------------------------
-*Multibackend is currently only available for the FCP driver.*
-
 This setup is specifically for users who want to use multiple storage
 drivers on their cinder-volume nodes.  In this case *each* driver
 instance must have a different configuration section with a unique
@@ -166,7 +166,7 @@ violin FCP driver, you might do the following:
 
     [violin-1]
     volume_backend_name=VMEM_FCP
-    volume_driver=cinder.volume.drivers.violin.violin_fc.ViolinFCDriver
+    volume_driver=cinder.volume.drivers.violin.v6000_fcp.V6000FCDriver
     gateway_vip=1.2.3.4
     gateway_mga=1.2.3.5
     gateway_mgb=1.2.3.6
