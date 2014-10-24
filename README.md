@@ -1,5 +1,5 @@
-cinder-violin-driver-havana
-===========================
+cinder-violin-driver-icehouse
+=============================
 
 *** WARNING: Alpha release. Use at your own risk! ***
 
